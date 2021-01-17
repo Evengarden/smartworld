@@ -1,27 +1,30 @@
 server {
-   listen 80 default_server;
-    listen [::]:80 default_server;
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	server_name localhost;
 
-server_name localhost;
-access_log /var/log/nginx/access.log;
-error_log /var/log/nginx/error.log;
-root /var/www/smartworld/public;
-index index.php index.html index.htm;
-location / {
-try_files $uri $uri/ /index.php$is_args$args;
-proxy_send_timeout 300;
-proxy_read_timeout 300;
-if (!-e $request_filename)
-{
-rewrite ^/(.*) /index.php?r=$1;
-}
-}
-location ~ \.php$ {
-fastcgi_pass unix:/run/php/php7.4-fpm.sock;
-fastcgi_index index.php;
-fastcgi_param SCRIPT_FILENAME
-$document_root$fastcgi_script_name;
-include fastcgi_params;
-fastcgi_read_timeout 300;
-}
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	root /var/www/smartworld/public;
+	index index.php index.html index.htm;
+
+	location / {
+	try_files $uri $uri/ /index.php$is_args$args;
+	proxy_send_timeout 300;
+	proxy_read_timeout 300;
+	if (!-e $request_filename)
+	{
+		rewrite ^/(.*) /index.php?r=$1;
+	}
+     }
+
+     location ~ \.php$ {
+	fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+	fastcgi_index index.php;
+	fastcgi_param SCRIPT_FILENAME
+	$document_root$fastcgi_script_name;
+	include fastcgi_params;
+	fastcgi_read_timeout 300;
+     }
 }
