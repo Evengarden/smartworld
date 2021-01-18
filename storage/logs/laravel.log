@@ -163,3 +163,23 @@ FATAL:  password authentication failed for user \"postgres\" at /var/www/smartwo
 #15 /var/www/smartworld/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
 #16 {main}
 "} 
+[2021-01-17 17:13:50] development.ERROR: The /var/www/smartworld/bootstrap/cache directory must be present and writable. {"exception":"[object] (Exception(code: 0): The /var/www/smartworld/bootstrap/cache directory must be present and writable. at /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php:177)
+[stacktrace]
+#0 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(136): Illuminate\\Foundation\\PackageManifest->write()
+#1 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Foundation/Console/PackageDiscoverCommand.php(32): Illuminate\\Foundation\\PackageManifest->build()
+#2 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\PackageDiscoverCommand->handle()
+#3 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#5 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#6 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Container/Container.php(610): Illuminate\\Container\\BoundMethod::call()
+#7 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call()
+#8 /var/www/smartworld/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute()
+#9 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run()
+#10 /var/www/smartworld/vendor/symfony/console/Application.php(971): Illuminate\\Console\\Command->run()
+#11 /var/www/smartworld/vendor/symfony/console/Application.php(290): Symfony\\Component\\Console\\Application->doRunCommand()
+#12 /var/www/smartworld/vendor/symfony/console/Application.php(166): Symfony\\Component\\Console\\Application->doRun()
+#13 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Console/Application.php(93): Symfony\\Component\\Console\\Application->run()
+#14 /var/www/smartworld/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#15 /var/www/smartworld/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#16 {main}
+"} 
