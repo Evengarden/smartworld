@@ -1,7 +1,7 @@
 server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
-	server_name localhost;
+	server_name smartworld.test;
 
 	access_log /var/log/nginx/access.log;
 	error_log /var/log/nginx/error.log;
