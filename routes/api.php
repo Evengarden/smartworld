@@ -15,7 +15,25 @@ use App\Models\User;
 |
 */
 
+//resources
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('user/authorize','App\Http\Controllers\UserController@Authorization');
+
+Route::get('user/posts','App\Http\Controllers\UserController@getPosts');
+
+Route::get('user/profile_info','App\Http\Controllers\UserController@getProfileInfo');
+
+Route::resource('user', 'App\Http\Controllers\UserController');
+
+Route::resource('post', 'App\Http\Controllers\PostController');
+
+Route::resource('follower', 'App\Http\Controllers\FollowerController');
+
+Route::resource('comment', 'App\Http\Controllers\CommentController');
+
+Route::resource('blacklist', 'App\Http\Controllers\BlacklistController');
+
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

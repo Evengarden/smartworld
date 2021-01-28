@@ -11,6 +11,26 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public function getPosts()
+    {
+        return $this->hasMany('App\Models\Post', 'user_id');
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany('App\Models\Comment', 'owner_id');
+    }
+
+    public function getFollowers()
+    {
+        return $this->hasMany('App\Models\Follower', 'user_id');
+    }
+
+    public function getBlockedUsers()
+    {
+        return $this->hasMany('App\Models\Comment','user_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +49,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'api_token',
         'remember_token',
     ];
 
