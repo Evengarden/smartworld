@@ -19,6 +19,8 @@ use App\Models\User;
 
 Route::post('user/authorize','App\Http\Controllers\UserController@Authorization');
 
+Route::get('user/news','App\Http\Controllers\UserController@News');
+
 Route::get('user/posts','App\Http\Controllers\UserController@getPosts');
 
 Route::get('user/profile_info','App\Http\Controllers\UserController@getProfileInfo');
@@ -34,6 +36,6 @@ Route::resource('comment', 'App\Http\Controllers\CommentController');
 Route::resource('blacklist', 'App\Http\Controllers\BlacklistController');
 
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth')->get('/me', function (Request $request) {
+    return Auth::user();
+});

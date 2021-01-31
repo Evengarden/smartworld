@@ -82,15 +82,25 @@ class UserController extends Controller
         $email = $request->email;
         $password = DB::table('users')->where('email',$email)->first()->password;
         if(Hash::check($request->password, $password)){
-            $auth = Auth::attempt(['email' => $email, 'password' => $request->password]);
+            $auth = auth('api')->attempt(['email' => $email, 'password' => $request->password]);
             if($auth){
                 $authUser= DB::table('users')->where([['email',$email]],[['password',$password]])->first()->id;
                 $user = User::find($authUser);
                 Auth::login($user);
-                echo Auth::user();
+                echo $auth;
             }
         }
        
+    }
+
+    public function News(Request $request){
+        $userId = $request->user_id;
+        $news = DB::table('posts')
+        ->select('posts.theme as theme','posts.text as text')
+        ->join('followers', 'posts.user_id', '=', 'followers.follower_id')
+        ->where('followers.follower_id',$userId)
+        ->get();
+        echo $news;
     }
 
     public function getPosts(Request $request){
