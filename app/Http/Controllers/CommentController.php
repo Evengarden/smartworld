@@ -27,22 +27,29 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = $request->user_id;
-
-        $blacklist = DB::table('users')
-        ->select('blacklists.blocked_user_id as  blocked user')
-        ->join('blacklists', 'users.id', '=', 'blacklists.user_id')
-        ->where('blacklists.blocked_user_id',$userId)
-        ->get();
-
-        if(count($blacklist)){
-            echo "Cant add the comment, you are in blacklist";
-           
+        $user = auth()->user();
+        if($user){
+            $userId = $request->user_id;
+            if($user->id == $userId){
+                $blacklist = DB::table('users')
+                ->select('blacklists.blocked_user_id as  blocked user')
+                ->join('blacklists', 'users.id', '=', 'blacklists.user_id')
+                ->where('blacklists.blocked_user_id',$userId)
+                ->get();
+        
+                if(count($blacklist)){
+                    echo "Cant add the comment, you are in blacklist";
+                   
+                }
+                else {
+                    return Comment::create($request->all());
+                }
+            }
+            else{
+                return "You can't add someone else's comment";
+            }
         }
-        else {
-            echo 'success';
-             return Comment::create($request->all());
-        }
+       
        
     }
 
@@ -54,7 +61,11 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        return Comment::find($id);
+        $user = auth()->user();
+        if($user){
+            return Comment::find($id);
+        }
+       
     }
 
     /**
@@ -66,9 +77,18 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $comment = Comment::find($id);
-        $comment->update($request->all());
-        return $comment;
+        $user = auth()->user();
+        if($user){
+            $comment = Comment::find($id);
+            if($user->id == $comment->user_id){
+                $comment->update($request->all());
+                return $comment;
+            }
+            else{
+                return "You cant update someone else's comment";
+            }
+        }
+       
     }
 
     /**
@@ -77,9 +97,19 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        $comment = Comment::destroy($id);
-        return $comment;
+        $user = auth()->user();
+        if($user){
+            $comment = Comment::find($id);
+            if($user->id == $comment->user_id){
+                $comment = Comment::destroy($id);
+                return $comment;
+            }
+            else{
+                return "You cant delete someone else's comment";
+            }
+        }
+        
     }
 }

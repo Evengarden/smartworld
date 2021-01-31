@@ -37,5 +37,5 @@ Route::resource('blacklist', 'App\Http\Controllers\BlacklistController');
 
 
 Route::middleware('auth')->get('/me', function (Request $request) {
-    return Auth::user();
+    return auth()->user();
 });

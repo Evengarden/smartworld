@@ -26,7 +26,21 @@ class BlacklistController extends Controller
      */
     public function store(Request $request)
     {
-        return Blacklist::create($request->all());
+        $user = auth()->user();
+        if($user){
+            $userId = $request->user_id;
+            $blockeduserId = $request->blocked_user_id;
+            if($user->id == $blockeduserId){
+                return "You can't add yourself to blacklist";
+            }
+            else if($user->id != $userId){
+                return "You can't add to blacklist instead someone else's";
+            }
+            else{
+                return Blacklist::create($request->all());
+            }
+        }
+       
     }
 
     /**
@@ -37,7 +51,12 @@ class BlacklistController extends Controller
      */
     public function show($id)
     {
-        return Blacklist::find($id);
+        $user = auth()->user();
+        if($user){
+            return Blacklist::find($id);
+            
+        }
+        
     }
 
     /**
@@ -49,9 +68,18 @@ class BlacklistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $blacklist = Blacklist::find($id);
-        $blacklist->update($request->all());
-        return $blacklist;
+        $user = auth()->user();
+        if($user){
+            $blacklist = Blacklist::find($id);
+            if($user->id == $blacklist->user_id){
+                $blacklist->update($request->all());
+                return $blacklist;
+            }
+            else{
+                return "You cant update someone else's blacklist";
+            }
+        }
+       
     }
 
     /**
@@ -62,7 +90,17 @@ class BlacklistController extends Controller
      */
     public function destroy($id)
     {
-        $blacklist = Blacklist::destroy($id);
-        return $blacklist;
+        $user = auth()->user();
+        if($user){
+            $blacklist = Blacklist::find($id);
+            if($user->id == $blacklist->user_id){
+                $blacklist = Blacklist::destroy($id);
+                return $blacklist;
+            }
+            else{
+                return "You cant delete someone else's blacklist";
+            }
+        }
+        
     }
 }

@@ -27,7 +27,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return Post::create($request->all());
+        $user = auth()->user();
+        if($user){
+            $userId = $request->user_id;
+            if($user->id == $userId){
+                return Post::create($request->all());
+            }
+        }
+       
     }
 
     /**
@@ -38,7 +45,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return Post::find($id);
+        $user = auth()->user();
+        if($user){
+            return Post::find($id);
+        }
+        
     }
 
     /**
@@ -50,9 +61,18 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
-        $post->update($request->all());
-        return $post;
+        $user = auth()->user();
+        if($user){
+            $post = Post::find($id);
+            if($user->id == $post->user_id){
+                $post->update($request->all());
+                return $post;
+            }
+            else{
+                return "You can't update someone else's post";
+            }
+        }
+       
     }
 
     /**
@@ -63,7 +83,17 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::destroy($id);
-        return $post;
+        $user = auth()->user();
+        if($user){
+            $post = Post::find($id);
+            if($user->id == $post->user_id){
+                $post = Post::destroy($id);
+                return $post;
+            }
+            else{
+                return 'You cant delete someone else`s post';
+            }
+        }
+       
     }
 }

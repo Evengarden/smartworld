@@ -26,7 +26,21 @@ class FollowerController extends Controller
      */
     public function store(Request $request)
     {
-        return Follower::create($request->all());
+        $user = auth()->user();
+        if($user){
+            $userId = $request->user_id;
+            $followerId = $request->follower_id;
+            if($user->id == $followerId){
+                return "You can't subscribe to yourself";
+            }
+            else if($user->id != $userId){
+                return "You can't subscribe instead someone else's";
+            }
+            else{
+                return Follower::create($request->all());
+            }
+        }
+       
     }
 
     /**
@@ -37,7 +51,11 @@ class FollowerController extends Controller
      */
     public function show($id)
     {
-        return Follower::find($id);
+        $user = auth()->user();
+        if($user){
+            return Follower::find($id);
+        }
+        
     }
 
     /**
@@ -49,9 +67,18 @@ class FollowerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $follower = Follower::find($id);
-        $follower->update($request->all());
-        return $follower;
+        $user = auth()->user();
+        if($user){
+            $follower = Follower::find($id);
+            if($user->id == $follower->user_id){
+                $follower->update($request->all());
+                return $follower;
+            }
+            else{
+                return "You cant update someone else's follow";
+            }
+        }
+       
     }
 
     /**
@@ -62,7 +89,17 @@ class FollowerController extends Controller
      */
     public function destroy($id)
     {
-        $follower = Follower::destroy($id);
-        return $follower;
+        $user = auth()->user();
+        if($user){
+            $follower = Follower::find($id);
+            if($user->id == $follower->user_id){
+                $follower = Follower::destroy($id);
+                return $follower;
+            }
+            else{
+                return "You cant delete someone else's follow";
+            }
+        }
+       
     }
 }
